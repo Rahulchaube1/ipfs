@@ -1,0 +1,24 @@
+import ipfshttpclient
+
+def upload_to_ipfs(file_path):
+    try:
+        # Connect to the IPFS node
+        client = ipfshttpclient.connect('/dns/localhost/tcp/5001/http')  # Adjust based on your IPFS node setup
+        
+        # Upload file to IPFS
+        response = client.add(file_path)
+        cid = response['Hash']
+        
+        print(f"File uploaded successfully! CID: {cid}")
+        return cid
+    
+    except FileNotFoundError:
+        print("Error: File not found. Please check the file path.")
+    except ipfshttpclient.exceptions.ConnectionError:
+        print("Error: Could not connect to the IPFS node. Ensure the node is running.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+# Example usage
+file_path = "example.txt"  # Replace with your file path
+upload_to_ipfs(file_path)
